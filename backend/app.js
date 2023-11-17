@@ -46,7 +46,7 @@ app.use("/api/v1/restaurants", restaurantsRouter); //, authUser between the two
 
 app.use(notFoundMiddleware);
 //this gives the whole app (all middleware) a try/catch block around it
-//we can now throw errors manually or catch the ones thrown by libraries like PG
+//we can now throw errors manually, using the keyword throw
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
