@@ -24,13 +24,12 @@ const getAllRestaurants = async (req, res) => {
 
 const getRestaurant = async (req, res) => {
     // const userID = req.user.userID;
-    const restaurant_id = req.params.id;
     // const list = await List.findOne({
     //     _id: listID,
     //     createdBy: userID,
     // });
     try{
-        const resp = await Restaurants.selectOneRestaurant(restaurant_id);
+        const resp = await Restaurants.selectOneRestaurant(req.params.id);
         res.status(StatusCodes.OK).json(resp.rows);
     }
     catch(error){
@@ -47,12 +46,13 @@ const createRestaurant = async (req, res) => {
     // req.body.createdBy = req.user.userID;
     // const list = await List.create(req.body);
     // res.status(StatusCodes.CREATED).json({list});
-    const name = req.body.name;
-    const price = req.body.price_range;
-    const location = req.body.location;
+    const {name, price_range: price, location} = req.body;
+    if(!name || !price || !location){
+        throw new BadRequestError("Enter Name, Price Range and Location");
+    }
     try{
-        await Restaurants.addRestaurant(name, location, price);
-        res.status(StatusCodes.CREATED).end();
+        const resp = await Restaurants.addRestaurant(name, location, price);
+        res.status(StatusCodes.CREATED).json(resp.rows[0]);
     }
     catch(error){
         throw new CustomAPIError(error);
@@ -70,32 +70,37 @@ const deleteRestaurant = async (req, res) => {
     //     throw new NotFoundError("List doesn't exist");
     // }
     // res.status(StatusCodes.OK).json({list});
-    res.status(StatusCodes.OK).json(req.body);
+    try{
+        const resp = await Restaurants.removeRestaurant(req.params.id);
+        res.status(StatusCodes.OK).json(resp.rows[0]);
+    }
+    catch(error){
+        if(error === true){
+            throw new NotFoundError("Restaurant with this ID doesn't exist");
+        }
+        else{
+            throw new CustomAPIError(error);
+        }
+    }
 };
 
 const updateRestaurant = async (req, res) => {
-    // const {title, items, completed} = req.body;
-    // const userID = req.user.userID;
-    // const listID = req.params.id;
-    // if(!title || !items || completed === "" || completed === undefined){
-    //     throw new BadRequestError("Enter Title, Items and Status");
-    // }
-    // const list = await List.findByIdAndUpdate(
-    //     {
-    //         _id: listID,
-    //         createdBy: userID,
-    //     },
-    //     req.body,
-    //     {
-    //         new: true,
-    //         runValidators: true,   
-    //     }
-    // );
-    // if(!list){
-    //     throw new NotFoundError("List doesn't exist");
-    // }
-    // res.status(StatusCodes.OK).json({list});
-    res.status(StatusCodes.OK).json(req.body);
+    const {name, price_range: price, location} = req.body;
+    if(!name || !price || !location){
+        throw new BadRequestError("Enter Name, Price Range and Location");
+    }
+    try{
+        const resp = await Restaurants.modifyRestaurant(req.params.id, name, location, price);
+        res.status(StatusCodes.OK).json(resp.rows[0]);
+    }
+    catch(error){
+        if(error === true){
+            throw new NotFoundError("Restaurant with this ID doesn't exist");
+        }
+        else{
+            throw new CustomAPIError(error);
+        }
+    }
 };
 
 module.exports = {
