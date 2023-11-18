@@ -6,14 +6,14 @@ const app = express();
 // connectDB
 const db = require("./db");
 
-// // middleware-import
-// // functional
+// middleware-import
+// functional
 // const authUser = require("./middleware/authentication");
-// // security
-// const helmet = require("helmet");
-// const cors = require("cors");
-// const xss = require("xss-clean");
-// const rateLimiter = require("express-rate-limit");
+// security
+const helmet = require("helmet");
+const cors = require("cors");
+const xss = require("xss-clean");
+const rateLimiter = require("express-rate-limit");
 // const cookieParser = require('cookie-parser');
 
 // routes
@@ -24,16 +24,16 @@ const restaurantsRouter = require("./routes/restaurants");
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
-// // middleware-use
-// app.use(cors({
-//   origin: 'http://127.0.0.1:5000', //this is the url of the frontend, this and only this can send requests
-//   credentials: true
-//   })); //has to be at the top, of all these, doesn't work otherwise
-// app.set("trust proxy", 1);  //for reverse proxy servers like Nginx
-// app.use(rateLimiter({
-//   windowMs: 15 * 60 * 1000, //15 mins
-//   max: 1000, //1000 reqs during ths windowMs
-// }));
+// middleware-use
+app.use(cors({
+  origin: 'http://127.0.0.1:5000', //this is the url of the frontend, this and only this can send requests
+  // credentials: true
+  })); //has to be at the top, of all these, doesn't work otherwise
+app.set("trust proxy", 1);  //for reverse proxy servers like Nginx
+app.use(rateLimiter({
+  windowMs: 15 * 60 * 1000, //15 mins
+  max: 1000, //1000 reqs during ths windowMs
+}));
 app.use(express.json());  //to be able to read JSON in req.body
 // app.use(helmet());
 // app.use(xss());
