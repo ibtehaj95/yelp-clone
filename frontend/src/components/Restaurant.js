@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./List.css";
+import "./Restaurant.css";
 import { useParams } from "react-router-dom";
 import { Card, TextField } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
@@ -15,7 +15,7 @@ import { useTheme } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import * as DOMPurify from 'dompurify';
 
-const List = (props) => {
+const Restaurant = (props) => {
 
     const [apiURL] = useState("http://127.0.0.1:3000/api/v1");
     const [listTitle, setListTitle] = useState(null);
@@ -204,7 +204,7 @@ const List = (props) => {
     };
 
     useEffect(() => {
-        getList();
+        // getList();
         if(location){
             props.setLocation(location.pathname.split("/")[1].toUpperCase());
         }
@@ -216,7 +216,7 @@ const List = (props) => {
             listItems,
             listCompleted,
         });
-        checkIfListComplete();
+        // checkIfListComplete();
     }, [listItems]);
 
     return(
@@ -315,4 +315,4 @@ const List = (props) => {
     );
 }
 
-export {List};
+export default Restaurant;

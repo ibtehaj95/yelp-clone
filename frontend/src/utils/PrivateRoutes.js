@@ -31,7 +31,7 @@ function PrivateRoutes(props){
 
     const navigateTo = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [userVerified, setUserVerified] = useState(false);
+    const [userVerified, setUserVerified] = useState(true); //was null
     const [apiURL] = useState("http://127.0.0.1:3000/api/v1");
 
     const handleOpenUserMenu = (event) => {
@@ -97,7 +97,7 @@ function PrivateRoutes(props){
 
     useEffect(() => {
         //if tokens exist, verify, otherwise redirect to login
-        verifyCookies();
+        // verifyCookies();
     }, []);
 
     return (
@@ -106,7 +106,7 @@ function PrivateRoutes(props){
         (
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
+                <AppBar position="fixed">
                     <Container>
                         <Toolbar disableGutters>
                             <div style={{ flexGrow: 1 }}>
@@ -114,7 +114,7 @@ function PrivateRoutes(props){
                                     <Typography textAlign="center">{props.location}</Typography>
                                 </Box>
                             </div>
-                            <Box>
+                            {/* <Box>
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src="http://localhost:3000/remy.jpg" />
                                 </IconButton>
@@ -142,17 +142,17 @@ function PrivateRoutes(props){
                                             console.log("Show User Profile");
                                         }
                                         else if(index === 1){
-                                            logout();
+                                            // logout();
                                         }
                                     }}>{setting}</Typography>
                                     </MenuItem>
                                 ))}
                                 </Menu>
-                            </Box>
+                            </Box> */}
                         </Toolbar>
                     </Container>
                 </AppBar>
-                <Drawer
+                {/* <Drawer
                     sx={{
                     width: drawerWidth,
                     flexShrink: 0,
@@ -176,12 +176,12 @@ function PrivateRoutes(props){
                                 if(text === "Home"){
                                     navigateTo(`/home`);
                                 }
-                                else if(text === "Trash"){
-                                    navigateTo(`/trash`);
-                                }
-                                else if(text === "User Management"){
-                                    navigateTo(`/manage`);
-                                }
+                                // else if(text === "Trash"){
+                                //     navigateTo(`/trash`);
+                                // }
+                                // else if(text === "User Management"){
+                                //     navigateTo(`/manage`);
+                                // }
                             }}
                         >
                             <ListItemIcon>
@@ -193,7 +193,7 @@ function PrivateRoutes(props){
                         </ListItem>
                     ))}
                     </List>
-                </Drawer>
+                </Drawer> */}
                 <Box
                     component="main"
                     sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}

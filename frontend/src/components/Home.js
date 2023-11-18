@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import ListWidget from "./ListWidget";
 import "./Home.css";
 import Button from '@mui/material/Button';
-import NewList from "./NewList";
+import NewRestaurant from "./NewRestaurant";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
 import { useLocation, useNavigate } from 'react-router-dom';
+import NewList from "./NewRestaurant";
 
 const Home = (props) => {
 
     const navigateTo = useNavigate();
     const [apiURL] = useState("http://127.0.0.1:3000/api/v1");
     const [lists, setLists] = useState([]);
-    const [showNewList, setShowNewList] = useState(false);
     const [location] = useState(useLocation());
-    
-    const openNewListCreate = () => setShowNewList(true);
 
     const getAllLists = async () => {
         try{
@@ -53,13 +52,16 @@ const Home = (props) => {
         if(location){
             props.setLocation(location.pathname.split("/")[1].toUpperCase());
         }
-        getAllLists();
+        // getAllLists();
     }, []);
 
     return(
         <div>
-            <Button variant="contained" onClick={openNewListCreate} startIcon={<AddIcon></AddIcon>}>New List</Button>
-            <div className="card-container">
+            <Typography variant="h4" component="div" sx = {{ textAlign: "center" }}>
+                Restaurant Finder
+            </Typography>
+            <NewList></NewList>
+            {/* <div className="card-container">
                 {lists.length > 0 && (
                     lists.map((list) => (
                         <ListWidget
@@ -70,13 +72,7 @@ const Home = (props) => {
                         ></ListWidget>
                     ))
                 )}
-            </div>
-            {
-                showNewList === true && <NewList
-                    showModal = {showNewList}
-                    setShowModal = {setShowNewList}
-                ></NewList>
-            }
+            </div> */}
         </div>
     );
 }

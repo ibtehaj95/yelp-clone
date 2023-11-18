@@ -7,7 +7,7 @@ const Root = () => {
 
     useEffect(() => {
         // console.log("Root");
-        navigateTo(`/login`);
+        // navigateTo(`/login`);
     }, []);
 
     return(
