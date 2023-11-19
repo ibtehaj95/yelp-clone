@@ -2,7 +2,7 @@ const db = require("../db");
 
 selectAllRestaurants = () => new Promise(async (resolve, reject) => {
     try{
-        const resp = await db.query("SELECT * FROM restaurants");
+        const resp = await db.query("SELECT * FROM restaurants ORDER BY restaurant_id");
         if(resp.rows.length === 0){
             reject(true);
         }

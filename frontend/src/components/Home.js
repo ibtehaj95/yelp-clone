@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ListWidget from "./ListWidget";
 import "./Home.css";
+import { useSharedContext } from "../utils/SharedContext";
 import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import NewRestaurant from "./NewRestaurant";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import AddIcon from '@mui/icons-material/Add';
 import { useLocation, useNavigate } from 'react-router-dom';
-import NewList from "./NewRestaurant";
+import NewRestaurant from "./NewRestaurant";
 
 const Home = (props) => {
 
@@ -15,6 +14,7 @@ const Home = (props) => {
     const [apiURL] = useState("http://127.0.0.1:3000/api/v1");
     const [restaurants, setRestaurants] = useState([]);
     const [location] = useState(useLocation());
+    const displayDollarSigns = useSharedContext().displayDollarSigns;
 
     const getAllRestaurants = async () => {
         try{
@@ -30,10 +30,10 @@ const Home = (props) => {
                 setRestaurants(respBody);
                 // toast.success('Fetched');
             }
-            else if(resp.status === 401){
-                navigateTo(`/login`);
-                toast.warn("Session Expired. Please Login");
-            }
+            // else if(resp.status === 401){
+            //     navigateTo(`/login`);
+            //     toast.warn("Session Expired. Please Login");
+            // }
             else{
                 toast.warn("Response Not Okay!");
                 const error = await resp.json();
@@ -46,12 +46,40 @@ const Home = (props) => {
         }
     };
 
-    const displayDollarSigns = (count) => {
-        let string = "";
-        for(let i=0; i<count; ++i){
-            string = string + "$";
+    const deleteRestaurant = async (index) => {
+        // console.log("Delete Restaurant", restaurants[index]);
+        const id = restaurants[index].restaurant_id;
+        try{
+            const resp = await fetch(`${apiURL}/restaurants/${id}`, {
+                method: "DELETE",
+                // credentials: 'include',
+                // headers: {
+                //     "Content-Type": "application/json",
+                //     },
+            });
+            if(resp.ok === true){
+                toast.success('Deleted');
+                getAllRestaurants();
+            }
+            // else if(resp.status === 401){
+            //     navigateTo(`/login`);
+            //     toast.warn("Session Expired. Please Login");
+            // }
+            else{
+                toast.warn("Response Not Okay!");
+                const error = await resp.json();
+                console.log("Failed to Delete", error);
+            }
         }
-        return string;
+        catch (error){
+            console.log("Failed to Fetch", error);
+            toast.warn("Response Not Okay!");
+        }
+    };
+
+    const gotoRestaurant = (index) => {
+        // console.log("Navigate To", restaurants[index].restaurant_id);
+        navigateTo(`/restaurant/${restaurants[index].restaurant_id}`);
     };
 
     useEffect(() => {
@@ -62,16 +90,19 @@ const Home = (props) => {
         getAllRestaurants();
     }, []);
 
-    useEffect(() => {
-        console.log(restaurants);
-    }, [restaurants]);
+    // useEffect(() => {
+    //     console.log(restaurants);
+    // }, [restaurants]);
 
     return(
         <div>
             <Typography variant="h4" component="div" sx = {{ textAlign: "center" }}>
                 Restaurant Finder
             </Typography>
-            <NewList></NewList>
+            <NewRestaurant
+                updateRestaurants = {getAllRestaurants}
+                dollarSigns = {displayDollarSigns}
+            ></NewRestaurant>
             {
                 restaurants!==undefined && restaurants.length>1 && (
                     <TableContainer component={Paper} sx={{ marginY: 2 }} >
@@ -86,7 +117,7 @@ const Home = (props) => {
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {restaurants.map((restaurant) => (
+                            {restaurants.map((restaurant, index) => (
                                 <TableRow
                                 key={restaurant.restaurant_id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: "#333131" }}
@@ -97,10 +128,10 @@ const Home = (props) => {
                                 <TableCell sx={{ color: 'white', fontSize: "0.9rem", paddingY: 1 }} align="center">0</TableCell>
                                 <TableCell sx={{ color: 'white', fontSize: "0.9rem", paddingY: 1 }} align="center">
                                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                                        <Button size="small" variant="contained" color="warning" onClick={() => console.log("Edit")}>
+                                        <Button size="small" variant="contained" color="warning" onClick={() => gotoRestaurant(index)}>
                                             Edit
                                         </Button>
-                                        <Button size="small" variant="contained" color="error" onClick={() => console.log("Delete")}>
+                                        <Button size="small" variant="contained" color="error" onClick={ () => deleteRestaurant(index)}>
                                             Delete
                                         </Button>
                                     </div>

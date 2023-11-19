@@ -30,7 +30,7 @@ const getRestaurant = async (req, res) => {
     // });
     try{
         const resp = await Restaurants.selectOneRestaurant(req.params.id);
-        res.status(StatusCodes.OK).json(resp.rows);
+        res.status(StatusCodes.OK).json(resp.rows[0]);
     }
     catch(error){
         if(error === true){

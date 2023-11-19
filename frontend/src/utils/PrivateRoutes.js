@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { SharedContextProvider } from "./SharedContext";
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -95,6 +96,8 @@ function PrivateRoutes(props){
         }
     };
 
+    
+
     useEffect(() => {
         //if tokens exist, verify, otherwise redirect to login
         // verifyCookies();
@@ -104,104 +107,107 @@ function PrivateRoutes(props){
         
         userVerified && 
         (
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar position="fixed">
-                    <Container>
-                        <Toolbar disableGutters>
-                            <div style={{ flexGrow: 1 }}>
-                                <Box>
-                                    <Typography textAlign="center">{props.location}</Typography>
-                                </Box>
-                            </div>
-                            {/* <Box>
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="http://localhost:3000/remy.jpg" />
-                                </IconButton>
-                                <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                                >
-                                {settings.map((setting, index) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center" onClick={(e) => {
-                                        if(index === 0){
-                                            //show user profile
-                                            console.log("Show User Profile");
-                                        }
-                                        else if(index === 1){
-                                            // logout();
-                                        }
-                                    }}>{setting}</Typography>
-                                    </MenuItem>
-                                ))}
-                                </Menu>
-                            </Box> */}
-                        </Toolbar>
-                    </Container>
-                </AppBar>
-                {/* <Drawer
-                    sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+            <SharedContextProvider>
+                <Box sx={{ display: 'flex' }}>
+                    <CssBaseline />
+                    <AppBar position="fixed">
+                        <Container>
+                            <Toolbar disableGutters>
+                                <div style={{ flexGrow: 1 }}>
+                                    <Box>
+                                        <Typography textAlign="center">{props.location}</Typography>
+                                    </Box>
+                                </div>
+                                {/* <Box>
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar alt="Remy Sharp" src="http://localhost:3000/remy.jpg" />
+                                    </IconButton>
+                                    <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                    >
+                                    {settings.map((setting, index) => (
+                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                        <Typography textAlign="center" onClick={(e) => {
+                                            if(index === 0){
+                                                //show user profile
+                                                console.log("Show User Profile");
+                                            }
+                                            else if(index === 1){
+                                                // logout();
+                                            }
+                                        }}>{setting}</Typography>
+                                        </MenuItem>
+                                    ))}
+                                    </Menu>
+                                </Box> */}
+                            </Toolbar>
+                        </Container>
+                    </AppBar>
+                    {/* <Drawer
+                        sx={{
                         width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                    }}
-                    variant="permanent"
-                    anchor="left"
-                >
-                    <Toolbar sx={{ display: "flex", justifyContent: "center" }}>
-                        <img src={logo} alt="lists-logo" />
-                    </Toolbar>
-                    <Divider />
-                    <List>
-                    {['Home', 'Trash', 'User Management'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                        <ListItemButton 
-                            onClick={(event) => { 
-                                if(text === "Home"){
-                                    navigateTo(`/home`);
-                                }
-                                // else if(text === "Trash"){
-                                //     navigateTo(`/trash`);
-                                // }
-                                // else if(text === "User Management"){
-                                //     navigateTo(`/manage`);
-                                // }
-                            }}
-                        >
-                            <ListItemIcon>
-                            {text === "Home" ? <HomeIcon /> : (text === "Trash" ? <DeleteIcon /> : (text === "User Management" ? <ManageAccountsIcon /> : <InboxIcon />))}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                            
-                        </ListItemButton>
-                        </ListItem>
-                    ))}
-                    </List>
-                </Drawer> */}
-                <Box
-                    component="main"
-                    sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-                >
-                    <Toolbar />
-                    <Outlet></Outlet>
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
+                        }}
+                        variant="permanent"
+                        anchor="left"
+                    >
+                        <Toolbar sx={{ display: "flex", justifyContent: "center" }}>
+                            <img src={logo} alt="lists-logo" />
+                        </Toolbar>
+                        <Divider />
+                        <List>
+                        {['Home', 'Trash', 'User Management'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                            <ListItemButton 
+                                onClick={(event) => { 
+                                    if(text === "Home"){
+                                        navigateTo(`/home`);
+                                    }
+                                    // else if(text === "Trash"){
+                                    //     navigateTo(`/trash`);
+                                    // }
+                                    // else if(text === "User Management"){
+                                    //     navigateTo(`/manage`);
+                                    // }
+                                }}
+                            >
+                                <ListItemIcon>
+                                {text === "Home" ? <HomeIcon /> : (text === "Trash" ? <DeleteIcon /> : (text === "User Management" ? <ManageAccountsIcon /> : <InboxIcon />))}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                                
+                            </ListItemButton>
+                            </ListItem>
+                        ))}
+                        </List>
+                    </Drawer> */}
+                    <Box
+                        component="main"
+                        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+                    >
+                        <Toolbar />
+                        <Outlet></Outlet>
+                    </Box>
                 </Box>
-            </Box>
+            </SharedContextProvider>
+            
         )
     );
 }

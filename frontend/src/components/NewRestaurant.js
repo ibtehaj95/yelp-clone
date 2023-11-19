@@ -28,46 +28,49 @@ const NewRestaurant = (props) => {
     };
 
     const addNewRestaurant = async () => {
-        // console.log("Create New List");
+        // console.log("Create New Restaurant");
         const data = {
             name: newRestName,
             location: newRestLoc,
-            priceRange: newPriceRange,
+            price_range: newPriceRange,
         };
-        // if(newListItems.length > 0){
 
-        //     data.items = newListItems
-        // }
-        console.log(data);
+        if(!data.name || !data.location || !data.price_range){
+            toast.warn("Invalid Data!");
+            console.log("Invalid Data");
+            return;
+        }
         
-        // try{
-        //     const resp = await fetch(`${apiURL}/lists`, {
-        //         method: "POST",
-        //         credentials: 'include',
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             },
-        //         body: JSON.stringify(data),
-        //     });
-        //     if(resp.ok === true){
-        //         closeNewListCreate();
-        //         // toast.success('Created'); //toast won't appear, since we reload page
-        //         navigateTo(0); //reload homepage
-        //     }
-        //     else if(resp.status === 401){
-        //         navigateTo(`/login`);
-        //         toast.warn("Session Expired. Please Login");
-        //     }
-        //     else{
-        //         toast.warn("Response Not Okay!");
-        //         const error = await resp.json();
-        //         console.log("Failed to Create", error);
-        //     }
-        // }
-        // catch (error){
-        //     console.log("Failed to Create", error);
-        //     toast.warn("Response Not Okay!");
-        // }
+        try{
+            const resp = await fetch(`${apiURL}/restaurants`, {
+                method: "POST",
+                // credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    },
+                body: JSON.stringify(data),
+            });
+            if(resp.ok === true){
+                toast.success('Added');
+                setNewRestName("Unnamed");
+                setNewRestLoc("Nowhere");
+                setNewPriceRange(1);
+                props.updateRestaurants(); //reload parent view
+            }
+            // else if(resp.status === 401){
+            //     navigateTo(`/login`);
+            //     toast.warn("Session Expired. Please Login");
+            // }
+            else{
+                toast.warn("Response Not Okay!");
+                const error = await resp.json();
+                console.log("Failed to Create", error);
+            }
+        }
+        catch (error){
+            toast.warn("Response Not Okay!");
+            console.log("Failed to Create", error);
+        }
     };
 
     // useEffect(() => {
@@ -102,11 +105,11 @@ const NewRestaurant = (props) => {
                         label="PriceRange"
                         onChange={(event) => setNewPriceRange(DOMPurify.sanitize(event.target.value))}
                     >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
+                        <MenuItem value={1}>{props.dollarSigns(1)}</MenuItem>
+                        <MenuItem value={2}>{props.dollarSigns(2)}</MenuItem>
+                        <MenuItem value={3}>{props.dollarSigns(3)}</MenuItem>
+                        <MenuItem value={4}>{props.dollarSigns(4)}</MenuItem>
+                        <MenuItem value={5}>{props.dollarSigns(5)}</MenuItem>
                     </Select>
                  </FormControl>
                 
