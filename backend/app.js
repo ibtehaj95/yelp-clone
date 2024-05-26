@@ -19,6 +19,7 @@ const rateLimiter = require("express-rate-limit");
 // routes
 // const authRouter = require("./routes/auth");
 const restaurantsRouter = require("./routes/restaurants");
+const reviewsRouter = require("./routes/reviews");
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -43,6 +44,7 @@ app.use(express.json());  //to be able to read JSON in req.body
 // routes
 // app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/restaurants", restaurantsRouter); //, authUser between the two
+app.use("/api/v1/reviews", reviewsRouter); //, authUser between the two
 
 app.use(notFoundMiddleware);
 //this gives the whole app (all middleware) a try/catch block around it

@@ -82,6 +82,12 @@ const Home = (props) => {
         navigateTo(`/restaurant/${restaurants[index].restaurant_id}`);
     };
 
+    const gotoReviews = (index) => {
+        // console.log("Navigate To", restaurants[index].restaurant_id);
+        navigateTo(`/reviews/${restaurants[index].restaurant_id}`);
+    };
+
+
     useEffect(() => {
         console.log("Home");
         if(location){
@@ -128,6 +134,9 @@ const Home = (props) => {
                                 <TableCell sx={{ color: 'white', fontSize: "0.9rem", paddingY: 1 }} align="center">0</TableCell>
                                 <TableCell sx={{ color: 'white', fontSize: "0.9rem", paddingY: 1 }} align="center">
                                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                                        <Button size="small" variant="contained" style={{ backgroundColor: '#e0e33b', color: 'black' }} onClick={() => gotoReviews(index)}>
+                                            Reviews
+                                        </Button>
                                         <Button size="small" variant="contained" color="warning" onClick={() => gotoRestaurant(index)}>
                                             Edit
                                         </Button>

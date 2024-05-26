@@ -8,6 +8,7 @@ import Home from "./components/Home";
 // import Reset from "./components/Reset";
 import Root from "./components/Root";
 import Restaurant from "./components/Restaurant";
+import Reviews from "./components/Reviews";
 import PrivateRoutes from './utils/PrivateRoutes';
 import PublicRoutes from './utils/PublicRoutes';
 import { ToastContainer } from 'react-toastify';
@@ -37,6 +38,7 @@ function App (){
                 >
                     <Route path="/home" element={<Home setLocation = {setLocation} ></Home>}></Route>
                     <Route path="/restaurant/:id" element={<Restaurant setLocation = {setLocation}></Restaurant>}></Route>
+                    <Route path="/reviews/:id" element={<Reviews setLocation = {setLocation}></Reviews>}></Route>
                     {/* <Route path="/trash" element={<Trash setLocation = {setLocation} ></Trash>}></Route> */}
                     {/* <Route path="/manage" element={<Manage setLocation = {setLocation} ></Manage>}></Route> */}
                 </Route>

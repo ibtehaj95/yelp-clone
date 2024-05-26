@@ -1,5 +1,11 @@
 const express = require("express");
-const {getAllRestaurants, getRestaurant, createRestaurant, deleteRestaurant, updateRestaurant,} = require("../controllers/restaurants");
+const {
+    getAllRestaurants, 
+    getRestaurant, 
+    createRestaurant, 
+    deleteRestaurant, 
+    updateRestaurant, 
+} = require("../controllers/restaurants");
 
 const router = express.Router();
 

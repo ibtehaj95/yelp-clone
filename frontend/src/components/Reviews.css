@@ -1,0 +1,15 @@
+.card-container{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.header-div{
+    display: flex;
+    flex-direction: row;
+}
+
+.textfield-div{
+    display: flex;
+    align-items: center;
+}
