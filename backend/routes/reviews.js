@@ -1,7 +1,7 @@
 const express = require("express");
 const {
     getAllReviews,
-    getReview,
+    getReviewsOneRestaurant,
     createReview,
     deleteReview,
     updateReview,
@@ -10,6 +10,6 @@ const {
 const router = express.Router();
 
 router.route("/").post(createReview).get(getAllReviews);
-router.route("/:id").patch(updateReview).get(getReview).delete(deleteReview);
+router.route("/:id").patch(updateReview).get(getReviewsOneRestaurant).delete(deleteReview);
 
 module.exports = router;
