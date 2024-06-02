@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NewReview from "./NewReview";
 import NoReviews from "./NoReviews";
+import Review from "./Review";
+import "./Reviews.css";
 import { useParams } from "react-router-dom";
 // import { useSharedContext } from "../utils/SharedContext";
 import {Button } from '@mui/material';
@@ -66,7 +68,7 @@ const Reviews = (props) => {
                     "Content-Type": "application/json",
                     },
             });
-            console.log("Response", resp);
+            // console.log("Response", resp);
             if(resp.ok === true){
                 // console.log("Fetched Reviews", await resp.json());
                 const respBody = await resp.json();
@@ -151,13 +153,26 @@ const Reviews = (props) => {
         <div>
             <Button size="small" variant="contained" color="primary" onClick={goHome}>Go to Home</Button>
             {
-                // restaurantReviews.length == 0 && <NoReviews></NoReviews>
-                restaurantReviews.length === 0 ? <NoReviews></NoReviews> : (
-                    <div>Reviews Here</div>
-            )
+                <div className="reviews-div">
+                    {
+                        // restaurantReviews.length == 0 && <NoReviews></NoReviews>
+                        restaurantReviews.length === 0 ? <NoReviews></NoReviews> : (
+                            restaurantReviews.map((review) => (
+                                <Review
+                                    key = {review.review_id}
+                                    user_id = {review.user_id}
+                                    rating = {review.rating}
+                                    review = {review.review}
+                                    updateReviews = {getReviewsOneRestaurant}
+                                ></Review>
+                            ))
+                        )
+                    }
+                </div>
             }
             <NewReview
                 restaurantID = {restaurantID}
+                updateReviews = {getReviewsOneRestaurant}
             ></NewReview>
         </div>
     );

@@ -51,6 +51,7 @@ const NewReview = (props) => {
             if(resp.ok === true){
                 toast.success('Added');
                 fillDummyValues();
+                props.updateReviews();
             }
             // else if(resp.status === 401){
             //     navigateTo(`/login`);
