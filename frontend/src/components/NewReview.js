@@ -76,7 +76,7 @@ const NewReview = (props) => {
     return(
         <div className="card-container">
                 {restaurantRating !== null && (
-                    <Card sx={{ minHeight: 300, minWidth: 1500, margin: 2, display: "flex", flexDirection: "column", justifyContent: "center"}} raised={true}>
+                    <Card sx={{ minHeight: 300, width: 1450, margin: 2, display: "flex", flexDirection: "column", justifyContent: "center"}} raised={true}>
                     <CardContent sx={{ paddingY: 0, display: "flex", flexDirection: "column" }}>
                         <div className="header-div" style={{ display: 'flex' }}>
                             {

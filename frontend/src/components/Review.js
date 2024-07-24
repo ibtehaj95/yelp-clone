@@ -10,7 +10,7 @@ const Review = (props) => {
 
     return(
         props.review.length > 0 && (
-            <Card sx={{ minWidth: 250, maxWidth: 500, margin: 2 }} raised={true}>
+            <Card sx={{ width: 300, margin: 2 }} raised={true}>
                 <div className="card-header">
                     <Typography variant="body1" component="div" sx={{color: 'white', marginLeft: '1rem'}}>
                         {props.user_id}
@@ -24,7 +24,7 @@ const Review = (props) => {
                         {props.review}
                     </Typography>
                 </CardContent>
-                <CardActions sx={{ display: "flex" }}>
+                <CardActions sx={{ display: "flex", paddingBottom: 2 }}>
                     <Button size="small" variant="contained">Helpful</Button>
                     <Button size="small" variant="contained">Not Helpful</Button>
                 </CardActions>

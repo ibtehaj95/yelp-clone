@@ -5,7 +5,9 @@ import Review from "./Review";
 import "./Reviews.css";
 import { useParams } from "react-router-dom";
 // import { useSharedContext } from "../utils/SharedContext";
-import {Button } from '@mui/material';
+import {Button, IconButton } from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -13,6 +15,8 @@ const Reviews = (props) => {
 
     const [apiURL] = useState("http://127.0.0.1:3000/api/v1");
     const [restaurantReviews, setRestaurantReviews] = useState([]);
+    const [reviewFirst, setReviewFirst] = useState(0);
+    const [reviewLast, setReviewLast] = useState(4);
     const [restaurantID] = useState(useParams().id);
     const navigateTo = useNavigate();
     const [location] = useState(useLocation());
@@ -122,6 +126,58 @@ const Reviews = (props) => {
     //     }
     // };
 
+    const renderReviews = () => {
+        if(restaurantReviews.length <= 4){
+            return(
+                <div className="reviews-div">
+                    {
+                        restaurantReviews.map((review) => (
+                            <Review
+                                key = {review.review_id}
+                                user_id = {review.user_id}
+                                rating = {review.rating}
+                                review = {review.review}
+                                updateReviews = {getReviewsOneRestaurant}
+                            ></Review>
+                        ))    
+                    }
+                </div>
+            );
+        }
+        else{
+            // show only 4 reviews, arrow to show 4 more
+            return(
+                <div className="reviews-div">
+                    {
+                        restaurantReviews.slice(reviewFirst, reviewLast).map((review) => (
+                            <Review
+                                key = {review.review_id}
+                                user_id = {review.user_id}
+                                rating = {review.rating}
+                                review = {review.review}
+                                updateReviews = {getReviewsOneRestaurant}
+                            ></Review>
+                        ))
+                    }
+                    <IconButton aria-label="next" sx={{alignSelf: "center", marginLeft: 4}} onClick={showMoreReviewsRight}>
+                        <ArrowForwardIosIcon sx={{ fontSize: 60 }} />
+                    </IconButton>
+                </div>
+            );
+        }
+    };
+
+    const showMoreReviewsRight = () => {
+        console.log("Show More Reviews Right");
+        if(reviewLast+1 < restaurantReviews.length+1){
+            setReviewFirst(reviewFirst+1);
+            setReviewLast(reviewLast+1);
+        }
+        else{
+            toast.warn("No More Reviews");
+        }
+    };
+
     // // useful for later when we add edit own review functionality
     // useEffect(() => {
     //     // console.log({
@@ -153,20 +209,9 @@ const Reviews = (props) => {
         <div>
             <Button size="small" variant="contained" color="primary" onClick={goHome}>Go to Home</Button>
             {
-                <div className="reviews-div">
+                <div>
                     {
-                        // restaurantReviews.length == 0 && <NoReviews></NoReviews>
-                        restaurantReviews.length === 0 ? <NoReviews></NoReviews> : (
-                            restaurantReviews.map((review) => (
-                                <Review
-                                    key = {review.review_id}
-                                    user_id = {review.user_id}
-                                    rating = {review.rating}
-                                    review = {review.review}
-                                    updateReviews = {getReviewsOneRestaurant}
-                                ></Review>
-                            ))
-                        )
+                        restaurantReviews.length === 0 ? <NoReviews></NoReviews> : renderReviews()
                     }
                 </div>
             }
