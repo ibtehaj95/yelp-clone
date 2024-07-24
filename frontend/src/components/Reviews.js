@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 // import { useSharedContext } from "../utils/SharedContext";
 import {Button, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -149,6 +149,12 @@ const Reviews = (props) => {
             return(
                 <div className="reviews-div">
                     {
+                        reviewFirst>0 && 
+                        <IconButton aria-label="reviews-prev" sx={{alignSelf: "center", marginLeft: 0}} onClick={showMoreReviewsLeft}>
+                            <ArrowBackIosNewIcon sx={{ fontSize: 60 }} />
+                        </IconButton>
+                    }
+                    {
                         restaurantReviews.slice(reviewFirst, reviewLast).map((review) => (
                             <Review
                                 key = {review.review_id}
@@ -159,9 +165,12 @@ const Reviews = (props) => {
                             ></Review>
                         ))
                     }
-                    <IconButton aria-label="next" sx={{alignSelf: "center", marginLeft: 4}} onClick={showMoreReviewsRight}>
-                        <ArrowForwardIosIcon sx={{ fontSize: 60 }} />
-                    </IconButton>
+                    {
+                        reviewLast<restaurantReviews.length && 
+                        <IconButton aria-label="reviews-next" sx={{alignSelf: "center", marginLeft: 0}} onClick={showMoreReviewsRight}>
+                            <ArrowForwardIosIcon sx={{ fontSize: 60 }} />
+                        </IconButton>
+                    }
                 </div>
             );
         }
@@ -169,9 +178,20 @@ const Reviews = (props) => {
 
     const showMoreReviewsRight = () => {
         console.log("Show More Reviews Right");
-        if(reviewLast+1 < restaurantReviews.length+1){
+        if(reviewLast+1 <= restaurantReviews.length){
             setReviewFirst(reviewFirst+1);
             setReviewLast(reviewLast+1);
+        }
+        else{
+            toast.warn("No More Reviews");
+        }
+    };
+
+    const showMoreReviewsLeft = () => {
+        console.log("Show More Reviews Left");
+        if(reviewFirst-1 >= 0){
+            setReviewFirst(reviewFirst-1);
+            setReviewLast(reviewLast-1);
         }
         else{
             toast.warn("No More Reviews");
